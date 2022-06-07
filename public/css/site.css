@@ -1,0 +1,237 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 0;
+  vertical-align: baseline;
+  font-family: 'Poppins', sans-serif;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+hr {
+  height: 1px;
+  color: #CD5257;
+  background-color: #cccccc;
+  border: 0;
+  margin: 8px 0 15px 0;
+}
+
+input:focus,
+button:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.clearfix {
+  clear: both;
+}
+
+ul {
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  overflow-x: hidden;
+  background: #26252F;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888888;
+}
+
+main .content {
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+}
+
+main .content .left {
+  border-radius: 15px 0 0 15px;
+  background-color: #ffffff;
+}
+
+main .content .left h1 {
+  color: #ff7c11;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+}
+
+main .content .right {
+  border-radius: 0 15px 15px 0;
+  -webkit-box-shadow: 0 0 1em #888888;
+          box-shadow: 0 0 1em #888888;
+}
+
+main .content .right section h2 {
+  color: #ff7c11;
+  font-size: 1.2rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+main .content .right section #clients {
+  overflow-y: scroll;
+  max-height: 500px;
+}
+
+main .content .right section #clients ul {
+  color: #ffffff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-bottom: 18px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid #ffffff;
+}
+
+main .content .right section #clients ul li {
+  position: relative;
+  width: 50%;
+}
+
+main .content .right section #clients ul li::before {
+  margin-right: 8px;
+  color: #888888;
+}
+
+main .content .right section #clients ul li:nth-child(1):not(.none) {
+  width: 100%;
+}
+
+main .content .right section #clients ul li:nth-child(1):not(.none)::before {
+  display: inline-block;
+  content: 'Código:';
+}
+
+main .content .right section #clients ul li:nth-child(2)::before {
+  display: inline-block;
+  content: 'Nome:';
+}
+
+main .content .right section #clients ul li:nth-child(3)::before {
+  display: inline-block;
+  content: 'RG:';
+}
+
+main .content .right section #clients ul li:nth-child(4)::before {
+  display: inline-block;
+  content: 'CPF:';
+}
+
+main .content .right section #clients ul li:nth-child(5)::before {
+  display: inline-block;
+  content: 'Nascimento:';
+}
+
+main .content .right section #clients ul li:nth-child(6)::before {
+  display: inline-block;
+  content: 'Tel:';
+}
+
+main .content .right section #clients ul li:nth-child(7)::before {
+  display: inline-block;
+  content: 'E-mail:';
+}
+
+main .content .right section #clients ul li:nth-child(8) {
+  width: 100%;
+}
+
+main .content .right section #clients ul li:nth-child(8)::before {
+  display: inline-block;
+  content: 'Cidade:';
+}
+
+main .content .right section #clients ul .delete, main .content .right section #clients ul .alterar {
+  margin: 5px 0;
+  color: #ffffff;
+  padding: 4px 14px;
+  border-radius: 8px;
+}
+
+main .content .right section #clients ul .delete {
+  background-color: #e03d3d;
+}
+
+main .content .right section #clients ul .alterar {
+  background-color: #888888;
+}
+
+@media screen and (max-width: 991px) {
+  main .content .left {
+    border-radius: 15px 15px 0 0;
+  }
+  main .content .right {
+    margin-top: 15px;
+    border-radius: 15px;
+  }
+}
+
+main #edit {
+  position: fixed;
+  display: -ms-grid;
+  display: grid;
+  inset: 0;
+  place-items: center;
+  border-radius: 15px;
+  visibility: hidden;
+}
+
+main #edit::before {
+  position: absolute;
+  content: '';
+  inset: 0;
+  opacity: 0;
+  -webkit-transition: .5s;
+  transition: .5s;
+  background-color: #000a;
+  z-index: -1;
+}
+
+main #edit form {
+  padding: 20px;
+  -webkit-transition: .5s;
+  transition: .5s;
+  border-radius: 15px;
+  background-color: #ffffff;
+  -webkit-transform: translateY(-120%);
+          transform: translateY(-120%);
+}
+
+main #edit.active {
+  visibility: visible;
+}
+
+main #edit.active::before {
+  visibility: visible;
+  opacity: 1;
+}
+
+main #edit.active form {
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+}
