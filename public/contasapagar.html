@@ -25,9 +25,6 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -42,83 +39,12 @@
                             <li><a class="dropdown-item" href="#">Something else here</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li>
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
             </div>
         </div>
     </nav>
 
-    <main>
-        <section class="container">
-            <div class="content">
-                <div class="row my-5">
-                    <div class="left col-lg-5">
-                        <h1 class="mt-3 text-center fw-bold">
-                            Área do cadastro do cliente
-                        </h1>
-                        <form class="row g-3" id="registration">
-                            <div class="col-lg-6">
-                                <label class="form-label">Nome</label>
-                                <input id="name" type="text" class="form-control" name="name">
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="form-label">Data de Nascimento</label>
-                                <input id="date" type="date" class="form-control" name="date">
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="form-label">RG</label>
-                                <input id="rg" type="text" class="form-control" name="rg">
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="form-label">CPF</label>
-                                <input id="cpf" type="text" class="form-control" name="cpf">
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label">Telefone</label>
-                                <input id="tel" type="tel" class="form-control" name="tel">
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label">E-mail</label>
-                                <input id="email" type="email" class="form-control" name="email">
-                            </div>
-                            <div class="col-lg-8">
-                                <label class="form-label">Cidade</label>
-                                <input id="city" type="text" class="form-control" name="city">
-                            </div>
-                            <div class="col-4">
-                                <label class="form-label">UF</label>
-                                <input id="uf" type="text" class="form-control" name="uf">
-                            </div>
-
-                            <div class="col-12 mb-3">
-                                <button type="button" class="btn btn-danger" id="cancel">Cancelar</button>
-                                <button type="button" class="btn btn-success" id="submit">Enviar</button>
-                            </div>
-                        </form>
-                        <div data-message></div>
-                    </div>
-                    <div class="right col-lg-7">
-                        <section>
-                            <h2 class="my-3">Tabela de cliente</h2>
-                            <div id="clients">
-                                <ul>
-                                    <li class="none text-white">
-                                        Nenhum cliente cadastrado
-                                    </li>
-                                </ul>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+    
 
     <script src="./js/jquery-3.6.0.slim.min.js"></script>
 </body>
