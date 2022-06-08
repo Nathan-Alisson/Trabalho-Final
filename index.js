@@ -15,3 +15,8 @@ const servidor = http.createServer(app);
 servidor.listen(port, host, () => {
     console.log(`Servidor: \nhttp://${host}:${port}/contasapagar \nhttp://${host}:${port}/planodecontas`);
 });
+
+
+
+
+//teste italo
