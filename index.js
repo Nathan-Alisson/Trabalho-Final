@@ -10,6 +10,7 @@ app.use('/clients', rtClient);
 app.use(express.static('./public'));
 
 const servidor = http.createServer(app);
+//Editado
 
 servidor.listen(port, host, () => {
     console.log(`Servidor: \nhttp://${host}:${port}/contasapagar \nhttp://${host}:${port}/planodecontas`);
