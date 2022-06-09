@@ -1,84 +1,80 @@
-export default class Client{
-    #code;  #name;  #rg;    #cpf; #date
-    #tel;   #email; #city;  #uf
+export default class ContaPagar {
+    //definição dos atributos desta classe
+    #id
+    #num_doc
+    #valor
+    #vencimento
+    #multa
+    #juros
+    #data_pgto    
 
-    constructor(code, name, rg, cpf, date, tel, email, city, uf){
-        this.#code      = code;
-        this.#name      = name;
-        this.#rg        = rg;
-        this.#cpf       = cpf;
-        this.#date      = date;
-        this.#tel       = tel;
-        this.#email     = email;
-        this.#city      = city;
-        this.#uf        = uf;
+    constructor(id,num_doc,valor,vencimento,multa,juros,data_pgto){
+        this.#id = id;
+        this.#num_doc = num_doc;
+        this.#valor = valor;
+        this.#vencimento = vencimento;
+        this.#multa = multa;
+        this.#juros = juros;
+        this.#data_pgto = data_pgto;
     }
-
-    // ===============================# Código
-    get code() {return this.#code;}
-    set code(value){
-        this.#code = value;
+    get id(){
+        return this.#id;
     }
-
-    // ===============================# Nome
-    get name(){return this.#name;}
-    set name(value){
-        this.#name = value;
+    set id(novoId){
+        this.#id = novoId;
+//-------------------------------------------------        
     }
-
-    // ===============================# RG
-    get rg(){return this.#rg;}
-    set rg(value){
-        this.#rg = value;
+    get num_doc(){
+        return this.#num_doc;
     }
-
-    // ===============================# CPF
-    get cpf(){return this.#cpf;}
-    set cpf(value){
-        this.cpf = value;
+    set num_doc(novoNum_doc){
+        this.#num_doc = novoNum_doc;
     }
-
-    // ===============================# Data de Nascimento
-    get date(){return this.#date;}
-    set date(value){
-        this.date = value;
+//------------------------------------------------- 
+    get valor(){
+        return this.#valor;
     }
-
-    // ===============================# Telefone
-    get tel(){return this.#tel;}
-    set tel(value){
-        this.tel = value;
+    set valor(novoValor){
+        this.#valor = novoValor;
     }
-
-    // ===============================# E-mail
-    get email(){return this.#email;}
-    set email(value){
-        this.email = value;
+//-------------------------------------------------     
+    get vencimento(){
+        return this.#vencimento;
     }
-
-    // ===============================# Cidade
-    get city(){return this.#city;}
-    set city(value){
-        this.#city = value;
+    set vencimento(novoVencimento){
+        this.#vencimento = novoVencimento;
     }
-
-    // ===============================# UF
-    get uf(){return this.#uf;}
-    set uf(value){
-        this.#uf = value;
+//-------------------------------------------------     
+    get multa(){
+        return this.#multa;
+    }
+    set multa(novaMulta){
+        this.#multa = novaMulta;
+    }
+//------------------------------------------------- 
+    get juros(){
+        return this.#juros;
+    }
+    set juros(novaJuros){
+        this.#juros = novaJuros;
+    }
+//------------------------------------------------- 
+    get data_pgto(){
+        return this.#data_pgto;
+    }
+    set data_pgto(novaData_pgto){
+        this.#data_pgto = novaData_pgto;
     }
 
     toJSON(){
-        return {
-            "code":     this.#code,
-            "name":     this.#name,
-            "rg":       this.#rg,
-            "cpf":      this.#cpf,
-            "date":     this.#date,
-            "tel":      this.#tel,
-            "email":    this.#email,
-            "city":     this.#city,        
-            "uf":       this.#uf            
+        return{
+            "id"            : this.#id,
+            "num_doc"       : this.#num_doc,
+            "valor"         : this.#valor,
+            "vencimento"    : this.#vencimento,
+            "multa"         : this.#multa,
+            "juros"         : this.#juros,
+            "data_pgto"     : this.#data_pgto
         }
     }
 }

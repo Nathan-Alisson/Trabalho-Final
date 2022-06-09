@@ -1,159 +1,135 @@
 import {MongoClient, ObjectId} from 'mongodb';
 
-import Client from '../models/client.js';
+import ContaPagar from '../models/contaPagar';
 
-const uriDatabase = "mongodb://localhost:27017";
-const baseDados = 'bsclient';
-const table = "clients";
+const uriBancoDados = "mongodb://localhost:27017";
+const baseDados = 'TrabFinal';
+const colecao = "contasPagar";
 
-export default class clientDB{
+export default class ContaPagarDB{
+
     constructor(){
-        this.clientMongo = new MongoClient(uriDatabase);
+        this.contaPagarMongo = new MongoClient(uriBancoDados);
     }
-
-    async include(client){
-        if (client instanceof Client){
+//------------------------------------------------------------------------------------------------------------------------------------------------
+    async incluir(contaPagar){
+        if (contaPagar instanceof ContaPagar){
             try{
-                await this.clientMongo.connect();
-                const result = await this.clientMongo.db(baseDados).collection(table)
-                .insertOne({"name"  : client.name,
-                            "rg"    : client.rg, 
-                            "cpf"   : client.cpf, 
-                            "date"  : client.date,
-                            "tel"   : client.tel,
-                            "email" : client.email,
-                            "city"  : client.city,
-                            "uf"    : client.uf
-                        });
-                client.code = result.insertedId.toString();
-
+                await this.contaPagarMongo.connect();
+                const resultado = await this.contaPagarMongo.db(baseDados).collection(colecao).insertOne({"num_doc": contaPagar.num_doc, "valor": contaPagar.valor, "vencimento": contaPagar.vencimento, "multa": contaPagar.multa, "juros" : contaPagar.juros, "data_pgto": contaPagar.data_pgto});
+                contaPagar.id = resultado.insertedId.toString();
             }catch(e){
                 console.error(e);
             }
             finally{
-                await this.clientMongo.close();
+                await this.contaPagarMongo.close();
             }
         }
-    }
 
-    async update(client){
-        if (client instanceof Client){
+    }
+//------------------------------------------------------------------------------------------------------------------------------------------------
+    async atualizar(contaPagar){
+        if (contaPagar instanceof ContaPagar){
             try{
-                await this.clientMongo.connect();
-            const identifier = new ObjectId(client.code);
-                const result = await this.clientMongo.db(baseDados).collection(table)
-                .updateOne({'_id':identifier},{"$set":{   "name"  : client.name,
-                                                          "rg"    : client.rg, 
-                                                          "cpf"   : client.cpf, 
-                                                          "date"  : client.date,
-                                                          "tel"   : client.tel,
-                                                          "email" : client.email,
-                                                          "city"  : client.city,
-                                                          "uf"    : client.uf
-                                                        }});
-                if (result.modifiedCount > 0){
+                await this.contaPagarMongo.connect();
+                const identificador = new ObjectId(contaPagar.id);
+                const resultado = await this.contaPagarMongo.db(baseDados).collection(colecao).updateOne({'_id': identificador}, {"$set": contaPagar.toJSON()});
+                if (resultado.modifiedCount > 0){
                     return {
-                        "resultado": "Cliente atualizado"
+                        "resultado": true
                     }
                 }
                 else{
                     return {
-                        "resultado": "Cliente não atualizado"
+                        "resultado": false
                     }
                 }
+
             }catch(e){
                 console.error(e);
             }finally{
-                await this.clientMongo.close();
+                await this.contaPagarMongo.close();
             }
-
         }
-    }
 
-    async delete(client){
-        if (client instanceof Client){
+    }
+//------------------------------------------------------------------------------------------------------------------------------------------------------   
+    async excluir(contaPagar){
+        if (contaPagar instanceof ContaPagar){
             try{
-                await this.clientMongo.connect();
-                const identifier = new ObjectId(client.code);
-                const result = await this.clientMongo.db(baseDados).collection(table)
-                .deleteOne({'_id':identifier});
-                if (result.deletedCount > 0){
+                await this.contaPagarMongo.connect();
+                const identificador = new ObjectId(contaPagar.id);
+                const resultado = await this.contaPagarMongo.db(baseDados).collection(colecao).deleteOne({'_id': identificador});
+                if (resultado.deletedCount > 0){
                     return {
-                        "resultado":true
+                        "resultado": true
                     }
                 }
                 else{
                     return {
-                        "resultado":false
+                        "resultado": false
                     }
                 }
+
             }catch(e){
                 console.error(e);
             }finally{
-                await this.clientMongo.close();
+                await this.contaPagarMongo.close();
             }
-
         }
 
     }
-
-    async consultCode(id){
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+    async consultarPorID(id){
         try{
-            await this.clientMongo.connect();
-            const identifier = new ObjectId(id);
-            const result = await this.clientMongo.db(baseDados).collection(table).findOne({"_id":identifier});
-            
-            if (result){
-                const client = new Client(result.code,
-                                          result.name,
-                                          result.rg,
-                                          result.cpf,
-                                          result.date,
-                                          result.tel,
-                                          result.email,
-                                          result.city,
-                                          result.uf
-                                          );
-                return client;
-            } 
+            await this.contaPagarMongo.connect();
+            const identificador = new ObjectId(id);
+            const resultadoBusca = await this.contaPagarMongo.db(baseDados).collection(colecao)
+            .findOne({"_id": identificador});
+            if (resultadoBusca){
+                const contaPagarBuscado = new Conta (resultadoBusca._id,
+                                            resultadoBusca.num_doc,
+                                            resultadoBusca.valor,
+                                            resultadoBusca.vencimento,
+                                            resultadoBusca.multa,
+                                            resultadoBusca.juros,
+                                            resultadoBusca.data_pgto);
+                return contaPagarBuscado;    
+            }
         }catch(e){
             console.error(e);
         }finally{
-            await this.clientMongo.close();
+            this.contaPagarMongo.close();
         }
-
     }
-
-    async consultName(name){
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+    //recuperar mais de um cliente
+    async consultarPorNumDoc(num_doc){
         try{
-            await this.clientMongo.connect();
-            const cursor = this.clientMongo.db(baseDados).collection(table).find({"name":{"$regex":name}});
-            const itens = await cursor.toArray();
-
-            let itensList = [];
-            if (itens){
-                itens.forEach((client) => {
-                    const item = new Client(client._id,
-                                            client.name,
-                                            client.rg,
-                                            client.cpf,
-                                            client.date,
-                                            client.tel,
-                                            client.email,
-                                            client.city,
-                                            client.uf,
-                                            );
-                    itensList.push(item);
+            await this.contaPagarMongo.connect();
+            const cursor = await this.contaPagarMongo.db(baseDados).collection(colecao)
+            .find({"num_doc":{"$regex":num_doc}});
+            const resultados = await cursor.toArray();
+            const listaContaPagar = [];
+            if (resultados){
+                resultados.forEach((resultado) => {
+                    const contaPagar = new Conta(resultado._id,
+                                            resultado.num_doc,
+                                            resultado.valor,
+                                            resultado.vencimento,
+                                            resultado.multa,
+                                            resultado.juros,
+                                            resultado.data_pgto);
+                    listaContaPagar.push(contaPagar);
                 });
             }
-            return itensList;
+            return listaContaPagar;
 
         }catch(e){
             console.error(e);
-        }finally{
-            await this.clientMongo.close();
+        }finally {
+            this.contaPagarMongo.close();
         }
     }
 }
-
 
