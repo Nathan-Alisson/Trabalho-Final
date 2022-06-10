@@ -3,31 +3,31 @@ import ContaPagarDB from '../persistence/contaPagarDB.js';
 import ContaPagar from '../models/contaPagar.js';
 
 
-const rotaPets = express.Router();
+const rotaContaPagar = express.Router();
 
 
-rotaPets.use(express.json());
-const petDB = new PetDB();
+rotaContaPagar.use(express.json());
+const contaPagarDB = new ContaPagarDB();
 
 
 //----------------------------------------------------------------------------------------------
-rotaPets.route('/:id?') // o ponto de interrogação define que o id não é obrigatório
+rotaContaPagar.route('/:id?') // o ponto de interrogação define que o id não é obrigatório
 .get((req, resp) => {
     if (req.params.id)
     {
-        petDB.consultarPorID(req.params.id).then((pet) => {
+        contaPagarDB.consultarPorID(req.params.id).then((contaPagar) => {
             resp.statusCode = 200; //resposta de sucesso
             resp.setHeader("Content-Type", "application/json");   
-            resp.json(pet.toJSON());
+            resp.json(contaPagar.toJSON());
         });       
     }
     else
     {
-        petDB.consultarPorNome("").then((pets) => {
+        contaPagarDB.consultarPorNumDoc("").then((contasPagar) => {
             resp.statusCode = 200;
             resp.setHeader("Content-Type", "application/json")
-            resp.json(pets.map((pet) => {
-                return pet.toJSON();
+            resp.json(contasPagar.map((contaPagar) => {
+                return contaPagar.toJSON();
             }));
         });
     }
@@ -43,24 +43,26 @@ rotaPets.route('/:id?') // o ponto de interrogação define que o id não é obr
         resp.setHeader("Content-Type", "application/json") 
         resp.json({
             "status": "405 - Não permitido",
-            "mensagem" : "Para cadastrar um animal, não se deve informar um id na url!"
+            "mensagem" : "Para cadastrar uma Conta, não se deve informar um id na url!"
         });
     }
     else{
-        const dados     = req.body;
-        const rga       = dados.rga;
-        const nome      = dados.nome;
-        const especie   = dados.especie;
-        const raca      = dados.raca;
-        const datanasc  = dados.datanasc;
-        if (rga && nome && especie && raca && datanasc){
-           const pet = new Pets(0, rga, nome, especie, raca, datanasc);
-           petDB.incluir(pet).then(() => {
+        const dados         = req.body;
+        const num_doc       = dados.num_doc;
+        const valor         = dados.valor;
+        const vencimento    = dados.vencimento;
+        const multa         = dados.multa;
+        const juros         = dados.juros;
+        const data_pgto     = dados.data_pgto;
+
+        if (num_doc && valor && vencimento && multa && juros && data_pgto){
+           const contaPagar = new ContaPagar(0, num_doc, valor, vencimento, multa, juros, data_pgto);
+           contaPagarDB.incluir(contaPagar).then(() => {
                resp.statusCode = 200;
                resp.setHeader("Content-Type", "application/json");
                resp.json({
                    "status":"200 - Incluído com sucesso",
-                   "id": pet.id
+                   "id": contaPagar.id
                })
            }); 
         }
@@ -69,7 +71,7 @@ rotaPets.route('/:id?') // o ponto de interrogação define que o id não é obr
             resp.setHeader("Content-Type", "application/json") 
             resp.json({
                 "status": "405 - Não permitido",
-                "mensagem" : "Para cadastrar um animal, informe corretamente o RGA, nome, especie, raça e data de nascimento!"
+                "mensagem" : "Para cadastrar uma Conta, informe corretamente o Número do documento, valor, a data de vencimento, o valor da multa (se houver), os juros (se houver) e data do pagamento!"
             });
         }       
     }
@@ -79,15 +81,16 @@ rotaPets.route('/:id?') // o ponto de interrogação define que o id não é obr
 
 .put((req, resp) => {
     if (req.params.id){
-        const dados     = req.body;
-        const rga       = dados.rga;
-        const nome      = dados.nome;
-        const especie   = dados.especie;
-        const raca      = dados.raca;
-        const datanasc  = dados.datanasc;
-        if (rga && nome && especie && raca && datanasc){
-           const pet = new Pets(req.params.id, rga, nome, especie, raca, datanasc);
-           petDB.atualizar(pet).then((resultado)=>{
+        const dados         = req.body;
+        const num_doc       = dados.num_doc;
+        const valor         = dados.valor;
+        const vencimento    = dados.vencimento;
+        const multa         = dados.multa;
+        const juros         = dados.juros;
+        const data_pgto     = dados.data_pgto;
+        if (num_doc && valor && vencimento && multa && juros && data_pgto){
+           const contaPagar = new ContaPagar(req.params.id, num_doc, valor, vencimento, multa, juros, data_pgto);
+           contaPagarDB.atualizar(contaPagar).then((resultado)=>{
                 resp.statusCode = 200;
                 resp.setHeader("Content-Type", "application/json");
                 resp.json(resultado);
@@ -98,7 +101,7 @@ rotaPets.route('/:id?') // o ponto de interrogação define que o id não é obr
             resp.setHeader("Content-Type", "application/json") 
             resp.json({
                 "status": "405 - Não permitido",
-                "mensagem" : "Para atualizar um animal, informe corretamente o RGA, nome, especie, raça e data de nascimento!"
+                "mensagem" : "Para atualizar uma conta, informe corretamente o Número do documento, valor, a data de vencimento, o valor da multa (se houver), os juros (se houver) e data do pagamento!"
             });
         }       
     }
@@ -107,7 +110,7 @@ rotaPets.route('/:id?') // o ponto de interrogação define que o id não é obr
         resp.setHeader("Content-Type", "application/json")
         resp.json({
             "status": "405 - Não permitido",
-            "mensagem" : "Para atualizar um animal, informe o id na url de requisição!"
+            "mensagem" : "Para atualizar uma conta, informe o id na url de requisição!"
         });
     }    
 })
@@ -116,8 +119,8 @@ rotaPets.route('/:id?') // o ponto de interrogação define que o id não é obr
 
 .delete((req, resp) => {
     if (req.params.id){
-        const pet = new Pets(req.params.id,"", "", "", "", "");
-        petDB.excluir(pet).then((resultado)=>{
+        const contaPagar = new ContaPagar(req.params.id,"", "", "", "", "", "");
+        contaPagarDB.excluir(contaPagar).then((resultado)=>{
             resp.statusCode = 200;
             resp.setHeader("Content-Type", "application/json")
             resp.json(resultado);
@@ -129,9 +132,9 @@ rotaPets.route('/:id?') // o ponto de interrogação define que o id não é obr
         resp.setHeader("Content-Type", "application/json")
         resp.json({
             "status": "405 - Não permitido",
-            "mensagem" : "Para excluir um animal cadastrado, informe o id na url de requisição!"
+            "mensagem" : "Para excluir uma conta cadastrada, informe o id na url de requisição!"
         });
     }    
 });
 
-export default rotaPets;
+export default rotaContaPagar;

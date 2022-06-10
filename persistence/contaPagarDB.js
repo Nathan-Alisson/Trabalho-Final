@@ -1,6 +1,6 @@
 import {MongoClient, ObjectId} from 'mongodb';
 
-import ContaPagar from '../models/contaPagar';
+import ContaPagar from '../models/contaPagar.js';
 
 const uriBancoDados = "mongodb://localhost:27017";
 const baseDados = 'TrabFinal';
@@ -87,7 +87,7 @@ export default class ContaPagarDB{
             const resultadoBusca = await this.contaPagarMongo.db(baseDados).collection(colecao)
             .findOne({"_id": identificador});
             if (resultadoBusca){
-                const contaPagarBuscado = new Conta (resultadoBusca._id,
+                const contaPagarBuscado = new ContaPagar(resultadoBusca._id,
                                             resultadoBusca.num_doc,
                                             resultadoBusca.valor,
                                             resultadoBusca.vencimento,
@@ -103,7 +103,6 @@ export default class ContaPagarDB{
         }
     }
 //--------------------------------------------------------------------------------------------------------------------------------------------------
-    //recuperar mais de um cliente
     async consultarPorNumDoc(num_doc){
         try{
             await this.contaPagarMongo.connect();
@@ -113,7 +112,7 @@ export default class ContaPagarDB{
             const listaContaPagar = [];
             if (resultados){
                 resultados.forEach((resultado) => {
-                    const contaPagar = new Conta(resultado._id,
+                    const contaPagar = new ContaPagar(resultado._id,
                                             resultado.num_doc,
                                             resultado.valor,
                                             resultado.vencimento,
