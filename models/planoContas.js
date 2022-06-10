@@ -1,84 +1,57 @@
-export default class Client{
-    #code;  #name;  #rg;    #cpf; #date
-    #tel;   #email; #city;  #uf
-
-    constructor(code, name, rg, cpf, date, tel, email, city, uf){
-        this.#code      = code;
-        this.#name      = name;
-        this.#rg        = rg;
-        this.#cpf       = cpf;
-        this.#date      = date;
-        this.#tel       = tel;
-        this.#email     = email;
-        this.#city      = city;
-        this.#uf        = uf;
+export default class PlanoContas{
+    #id 
+    #descricao
+    #id_fornecedor
+    #id_contaPagar
+//    #id_contaPagar
+    constructor(id,descricao,id_fornecedor,id_contaPagar){
+        this.#id = id;
+        this.#descricao = descricao;
+        this.#id_fornecedor = id_fornecedor;
+        this.#id_contaPagar = id_contaPagar;
     }
 
-    // ===============================# Código
-    get code() {return this.#code;}
-    set code(value){
-        this.#code = value;
+    // **** ID ****
+    get id(){
+        return this.#id;
     }
 
-    // ===============================# Nome
-    get name(){return this.#name;}
-    set name(value){
-        this.#name = value;
+    set id(novoId){
+        this.#id = novoId;
     }
 
-    // ===============================# RG
-    get rg(){return this.#rg;}
-    set rg(value){
-        this.#rg = value;
+    // **** Descrição ***
+    get descricao(){
+        return this.#descricao;
     }
 
-    // ===============================# CPF
-    get cpf(){return this.#cpf;}
-    set cpf(value){
-        this.cpf = value;
+    set descricao(novaDescricao){
+        this.#descricao = novaDescricao;
     }
 
-    // ===============================# Data de Nascimento
-    get date(){return this.#date;}
-    set date(value){
-        this.date = value;
+    // **** ID Fornecedor ****
+    get id_fornecedor(){
+        return this.#id_fornecedor;
     }
 
-    // ===============================# Telefone
-    get tel(){return this.#tel;}
-    set tel(value){
-        this.tel = value;
+    set id_fornecedor(novoIdFornecedor){
+        this.#id_fornecedor = novoIdFornecedor;
     }
 
-    // ===============================# E-mail
-    get email(){return this.#email;}
-    set email(value){
-        this.email = value;
+    get id_contaPagar(){
+        return this.#id_contaPagar;
     }
 
-    // ===============================# Cidade
-    get city(){return this.#city;}
-    set city(value){
-        this.#city = value;
-    }
-
-    // ===============================# UF
-    get uf(){return this.#uf;}
-    set uf(value){
-        this.#uf = value;
+    set id_contaPagar(novoId_contaPagar){
+        this.#id_contaPagar = novoId_contaPagar;
     }
 
     toJSON(){
         return {
-            "code":     this.#code,
-            "name":     this.#name,
-            "rg":       this.#rg,
-            "cpf":      this.#cpf,
-            "date":     this.#date,
-            "tel":      this.#tel,
-            "email":    this.#email,
-            "city":     this.#city,        
-            "uf":       this.#uf            
+            "id":this.#id,
+            "descricao":this.#descricao,
+            "id_fornecedor":this.#id_fornecedor,
+            "id_contaPagar":this.#id_contaPagar.map((contaPagar) => {return contaPagar.toJSON()})            
         }
     }
 }

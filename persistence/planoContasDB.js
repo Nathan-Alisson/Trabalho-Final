@@ -1,159 +1,141 @@
 import {MongoClient, ObjectId} from 'mongodb';
-
-import Client from '../models/client.js';
+import ContaPagar from '../models/contaPagar.js';
+import PlanoContas from '../models/planoContas.js';
 
 const uriDatabase = "mongodb://localhost:27017";
-const baseDados = 'bsclient';
-const table = "clients";
+const baseDados = 'TrabFinal';
+const colecao = "planoConta";
 
-export default class clientDB{
+export default class planoContasDB{
     constructor(){
-        this.clientMongo = new MongoClient(uriDatabase);
+        this.planoContaMongo = new MongoClient(uriDatabase);
     }
 
-    async include(client){
-        if (client instanceof Client){
+    async incluir(planoContas){
+        if (planoContas instanceof PlanoContas){
             try{
-                await this.clientMongo.connect();
-                const result = await this.clientMongo.db(baseDados).collection(table)
-                .insertOne({"name"  : client.name,
-                            "rg"    : client.rg, 
-                            "cpf"   : client.cpf, 
-                            "date"  : client.date,
-                            "tel"   : client.tel,
-                            "email" : client.email,
-                            "city"  : client.city,
-                            "uf"    : client.uf
-                        });
-                client.code = result.insertedId.toString();
+                await this.planoContaMongo.connect();
+                const resultado = await this.planoContaMongo.db(baseDados).collection(colecao).insertOne({"descricao" : planoContas.descricao,"id_fornecedor" : planoContas.id_fornecedor});
+                planoContas.id = resultado.insertedId.toString();
 
             }catch(e){
                 console.error(e);
             }
             finally{
-                await this.clientMongo.close();
+                await this.planoContaMongo.close();
             }
         }
     }
 
-    async update(client){
-        if (client instanceof Client){
+    async atualizar(planoContas){
+        if (planoContas instanceof PlanoContas){
             try{
-                await this.clientMongo.connect();
-            const identifier = new ObjectId(client.code);
-                const result = await this.clientMongo.db(baseDados).collection(table)
-                .updateOne({'_id':identifier},{"$set":{   "name"  : client.name,
-                                                          "rg"    : client.rg, 
-                                                          "cpf"   : client.cpf, 
-                                                          "date"  : client.date,
-                                                          "tel"   : client.tel,
-                                                          "email" : client.email,
-                                                          "city"  : client.city,
-                                                          "uf"    : client.uf
-                                                        }});
-                if (result.modifiedCount > 0){
+                await this.planoContaMongo.connect();
+                const identificador = new ObjectId(planoContas.id);
+                const resultado = await this.planoContaMongo.db(baseDados).collection(colecao)
+                .updateOne({'_id':identificador},{"$set": planoContas.toJSON()});
+                if (resultado.modifiedCount > 0){
                     return {
-                        "resultado": "Cliente atualizado"
+                        "resultado": true
                     }
                 }
                 else{
                     return {
-                        "resultado": "Cliente não atualizado"
+                        "resultado": false
                     }
                 }
             }catch(e){
                 console.error(e);
             }finally{
-                await this.clientMongo.close();
+                await this.planoContaMongo.close();
             }
 
         }
     }
 
-    async delete(client){
-        if (client instanceof Client){
+    async excluir(planoContas){
+        if (planoContas instanceof PlanoContas){
             try{
-                await this.clientMongo.connect();
-                const identifier = new ObjectId(client.code);
-                const result = await this.clientMongo.db(baseDados).collection(table)
-                .deleteOne({'_id':identifier});
-                if (result.deletedCount > 0){
+                await this.planoContaMongo.connect();
+                const identificador = new ObjectId(planoContas.id);
+                const resultado = await this.planoContaMongo.db(baseDados).collection(colecao).deleteOne({'_id': identificador});
+                if (resultado.deletedCount > 0){
                     return {
-                        "resultado":true
+                        "resultado": true
                     }
                 }
                 else{
                     return {
-                        "resultado":false
+                        "resultado": false
                     }
                 }
             }catch(e){
                 console.error(e);
             }finally{
-                await this.clientMongo.close();
+                await this.planoContaMongo.close();
             }
 
         }
 
     }
 
-    async consultCode(id){
+    async consultarID(id){
         try{
-            await this.clientMongo.connect();
-            const identifier = new ObjectId(id);
-            const result = await this.clientMongo.db(baseDados).collection(table).findOne({"_id":identifier});
-            
-            if (result){
-                const client = new Client(result.code,
-                                          result.name,
-                                          result.rg,
-                                          result.cpf,
-                                          result.date,
-                                          result.tel,
-                                          result.email,
-                                          result.city,
-                                          result.uf
-                                          );
-                return client;
-            } 
+            await this.planoContaMongo.connect();
+            const identificador = new ObjectId(id);
+            const itens = await this.planoContaMongo.db(baseDados).collection(colecao).findOne({"_id":identificador});
+           
+
+            let itensList = [];
+            if (itens){
+            //    itens.forEach((planoContas) => {
+                for (const resultado of itens){
+                
+                    const buscaContaPagar = await this.planoContaMongo.db(baseDados).collection("contasPagar").findOne({"id_conta": resultado._id.toString()});
+                    let listaContaPagar = buscaContaPagar.map((docContaPagar) => {
+                        return new ContaPagar(docContaPagar._id.toString(), docContaPagar.num_doc, docContaPagar.valor,docContaPagar.vencimento,docContaPagar.multa,docContaPagar.juros,docContaPagar.data_pgto);
+                    });
+                    const it = new PlanoContas(resultado._id, resultado.descricao, resultado.id_fornecedor,listaContaPagar);
+                    itensList.push(it);
+                }    
+                    
+            }
+            return itensList;
         }catch(e){
             console.error(e);
         }finally{
-            await this.clientMongo.close();
+            await this.planoContaMongo.close();
         }
 
     }
 
-    async consultName(name){
+    async consultarDescricao(descricao){
         try{
-            await this.clientMongo.connect();
-            const cursor = this.clientMongo.db(baseDados).collection(table).find({"name":{"$regex":name}});
+            await this.planoContaMongo.connect();
+            const cursor = this.planoContaMongo.db(baseDados).collection(colecao).find({"descricao":{"$regex":descricao}});
             const itens = await cursor.toArray();
 
             let itensList = [];
             if (itens){
-                itens.forEach((client) => {
-                    const item = new Client(client._id,
-                                            client.name,
-                                            client.rg,
-                                            client.cpf,
-                                            client.date,
-                                            client.tel,
-                                            client.email,
-                                            client.city,
-                                            client.uf,
-                                            );
+            //    itens.forEach((planoContas) => {
+                for (const planoContas of itens){
+                    const buscaContaPagar = await this.planoContaMongo.db(baseDados).collection("contasPagar").find({"id_conta":planoContas._id.toString()}).toArray();
+                    let listaContaPagar = buscaContaPagar.map((docContaPagar) => {
+                        return new ContaPagar(docContaPagar._id.toString(), docContaPagar.num_doc, docContaPagar.valor,docContaPagar.vencimento,docContaPagar.multa,docContaPagar.juros,docContaPagar.data_pgto);
+                    });
+                    const item = new PlanoContas(planoContas._id,
+                                            planoContas.descricao,
+                                            planoContas.id_fornecedor,
+                                            listaContaPagar);
                     itensList.push(item);
-                });
+                }
             }
             return itensList;
 
         }catch(e){
             console.error(e);
         }finally{
-            await this.clientMongo.close();
+            await this.planoContaMongo.close();
         }
     }
 }
-
-

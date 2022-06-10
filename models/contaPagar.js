@@ -6,9 +6,10 @@ export default class ContaPagar {
     #vencimento
     #multa
     #juros
-    #data_pgto    
+    #data_pgto
+    #id_conta    
 
-    constructor(id,num_doc,valor,vencimento,multa,juros,data_pgto){
+    constructor(id,num_doc,valor,vencimento,multa,juros,data_pgto,id_conta){
         this.#id = id;
         this.#num_doc = num_doc;
         this.#valor = valor;
@@ -16,6 +17,7 @@ export default class ContaPagar {
         this.#multa = multa;
         this.#juros = juros;
         this.#data_pgto = data_pgto;
+        this.#id_conta = id_conta;
     }
     get id(){
         return this.#id;
@@ -65,6 +67,14 @@ export default class ContaPagar {
     set data_pgto(novaData_pgto){
         this.#data_pgto = novaData_pgto;
     }
+//-------------------------------------------------
+    get id_conta(){
+        return this.#id_conta;
+    }
+    set id_conta(novoId_conta){
+        this.#id_conta = novoId_conta;
+    }
+
 
     toJSON(){
         return{
@@ -74,7 +84,8 @@ export default class ContaPagar {
             "vencimento"    : this.#vencimento,
             "multa"         : this.#multa,
             "juros"         : this.#juros,
-            "data_pgto"     : this.#data_pgto
+            "data_pgto"     : this.#data_pgto,
+            "id_conta"      : this.#id_conta
         }
     }
 }

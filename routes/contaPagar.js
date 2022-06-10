@@ -54,9 +54,10 @@ rotaContaPagar.route('/:id?') // o ponto de interrogação define que o id não 
         const multa         = dados.multa;
         const juros         = dados.juros;
         const data_pgto     = dados.data_pgto;
+        const id_conta      = dados.id_conta;
 
-        if (num_doc && valor && vencimento && multa && juros && data_pgto){
-           const contaPagar = new ContaPagar(0, num_doc, valor, vencimento, multa, juros, data_pgto);
+        if (num_doc && valor && vencimento && multa && juros && data_pgto && id_conta){
+           const contaPagar = new ContaPagar(0, num_doc, valor, vencimento, multa, juros, data_pgto, id_conta);
            contaPagarDB.incluir(contaPagar).then(() => {
                resp.statusCode = 200;
                resp.setHeader("Content-Type", "application/json");
@@ -88,8 +89,9 @@ rotaContaPagar.route('/:id?') // o ponto de interrogação define que o id não 
         const multa         = dados.multa;
         const juros         = dados.juros;
         const data_pgto     = dados.data_pgto;
-        if (num_doc && valor && vencimento && multa && juros && data_pgto){
-           const contaPagar = new ContaPagar(req.params.id, num_doc, valor, vencimento, multa, juros, data_pgto);
+        const id_conta      = dados.id_conta;
+        if (num_doc && valor && vencimento && multa && juros && data_pgto && id_conta){
+           const contaPagar = new ContaPagar(req.params.id, num_doc, valor, vencimento, multa, juros, data_pgto, id_conta);
            contaPagarDB.atualizar(contaPagar).then((resultado)=>{
                 resp.statusCode = 200;
                 resp.setHeader("Content-Type", "application/json");
@@ -119,7 +121,7 @@ rotaContaPagar.route('/:id?') // o ponto de interrogação define que o id não 
 
 .delete((req, resp) => {
     if (req.params.id){
-        const contaPagar = new ContaPagar(req.params.id,"", "", "", "", "", "");
+        const contaPagar = new ContaPagar(req.params.id,"", "", "", "", "", "","");
         contaPagarDB.excluir(contaPagar).then((resultado)=>{
             resp.statusCode = 200;
             resp.setHeader("Content-Type", "application/json")

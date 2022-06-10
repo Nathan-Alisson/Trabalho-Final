@@ -16,7 +16,7 @@ export default class ContaPagarDB{
         if (contaPagar instanceof ContaPagar){
             try{
                 await this.contaPagarMongo.connect();
-                const resultado = await this.contaPagarMongo.db(baseDados).collection(colecao).insertOne({"num_doc": contaPagar.num_doc, "valor": contaPagar.valor, "vencimento": contaPagar.vencimento, "multa": contaPagar.multa, "juros" : contaPagar.juros, "data_pgto": contaPagar.data_pgto});
+                const resultado = await this.contaPagarMongo.db(baseDados).collection(colecao).insertOne({"num_doc": contaPagar.num_doc, "valor": contaPagar.valor, "vencimento": contaPagar.vencimento, "multa": contaPagar.multa, "juros" : contaPagar.juros, "data_pgto": contaPagar.data_pgto, "id_conta": contaPagar.id_conta});
                 contaPagar.id = resultado.insertedId.toString();
             }catch(e){
                 console.error(e);
