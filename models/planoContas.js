@@ -54,4 +54,11 @@ export default class PlanoContas{
             "id_contaPagar":this.#id_contaPagar.map((contaPagar) => {return contaPagar.toJSON()})            
         }
     }
+    toJSON2(){
+        return {
+            "id":this.#id,
+            "descricao":this.#descricao,
+            "id_fornecedor":this.#id_fornecedor            
+        }
+    }
 }

@@ -32,7 +32,7 @@ export default class planoContasDB{
             try{
                 await this.planoContaMongo.connect();
                 const identificador = new ObjectId(planoContas.id);
-                const resultado = await this.planoContaMongo.db(baseDados).collection(colecao).updateOne({'_id':identificador},{"$set": planoContas.toJSON()});
+                const resultado = await this.planoContaMongo.db(baseDados).collection(colecao).updateOne({'_id':identificador},{"$set": planoContas.toJSON2()});
                 
                 if (resultado.modifiedCount > 0){
                     return {

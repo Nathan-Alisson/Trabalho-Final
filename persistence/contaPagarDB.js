@@ -93,7 +93,8 @@ export default class ContaPagarDB{
                                             resultadoBusca.vencimento,
                                             resultadoBusca.multa,
                                             resultadoBusca.juros,
-                                            resultadoBusca.data_pgto);
+                                            resultadoBusca.data_pgto,
+                                            resultadoBusca.id_conta);
                 return contaPagarBuscado;    
             }
         }catch(e){
@@ -118,7 +119,8 @@ export default class ContaPagarDB{
                                             resultado.vencimento,
                                             resultado.multa,
                                             resultado.juros,
-                                            resultado.data_pgto);
+                                            resultado.data_pgto,
+                                            resultado.id_conta);
                     listaContaPagar.push(contaPagar);
                 });
             }
