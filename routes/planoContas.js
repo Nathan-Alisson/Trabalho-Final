@@ -15,7 +15,9 @@ planoDeContas.route('/:id?')
         PlanoContasDB.consultarID(req.params.id).then((planoConta) => {
             resp.statusCode=200;  //sucesso  
             resp.setHeader("Content-Type","application/json");
-            resp.json(planoConta.toJSON());
+            resp.json(planoConta.map((planoContas) => {
+                return planoContas.toJSON();
+            })); 
         });
     }
     else
@@ -26,10 +28,10 @@ planoDeContas.route('/:id?')
             resp.json(planoConta.map((planoContas) => {
                 return planoContas.toJSON();
             }));          
-      })
+        })
     }
 
- })
+})
 
 .post((req, resp) => {
      if (req.params.id)
@@ -46,8 +48,9 @@ planoDeContas.route('/:id?')
         const dados = req.body;
         const descricao = dados.descricao;
         const id_fornecedor = dados.id_fornecedor;
-        if (descricao && id_fornecedor){
-            const planoContas = new PlanoContas(0,descricao,id_fornecedor);
+        const id_contaPagar = dados.id_contaPagar;
+        if (descricao && id_fornecedor && id_contaPagar){
+            const planoContas = new PlanoContas(0,descricao,id_fornecedor, id_contaPagar);
             PlanoContasDB.incluir(planoContas).then(() => {
                 resp.statusCode=200;
                 resp.setHeader("Content-Type","application/json");
@@ -73,8 +76,9 @@ planoDeContas.route('/:id?')
         const dados = req.body;
         const descricao = dados.descricao;
         const id_fornecedor = dados.id_fornecedor;
-        if(descricao && id_fornecedor){
-            const planoContas = new PlanoContas(req.params.id,descricao,id_fornecedor);
+        const id_contaPagar = dados.id_contaPagar;
+        if(descricao && id_fornecedor && id_contaPagar){
+            const planoContas = new PlanoContas(req.params.id,descricao,id_fornecedor, id_contaPagar);
             PlanoContasDB.atualizar(planoContas).then((resposta) => {
                 resp.statusCode=200;
                 resp.setHeader("Content-Type","application/json");
@@ -103,7 +107,7 @@ planoDeContas.route('/:id?')
 
 .delete((req,resp) => { 
     if(req.params.id){
-        const planoContas = new PlanoContas(req.params.id,"","");
+        const planoContas = new PlanoContas(req.params.id,"","","");
         PlanoContasDB.excluir(planoContas).then((resultado) => {
             resp.statusCode=200;
             resp.setHeader("Content-Type","text/html");
@@ -123,8 +127,8 @@ planoDeContas.route('/:id?')
 
 // **** Chave estrangeira ****
 
-function insert (id_fornecedor){
+/*function insert (id_fornecedor){
         $sql = "INSERT INTO Fornecedor (id_fornecedor, id_conta)";
-}
+}*/
 
 export default planoDeContas;

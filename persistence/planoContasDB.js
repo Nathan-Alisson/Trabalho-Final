@@ -32,8 +32,8 @@ export default class planoContasDB{
             try{
                 await this.planoContaMongo.connect();
                 const identificador = new ObjectId(planoContas.id);
-                const resultado = await this.planoContaMongo.db(baseDados).collection(colecao)
-                .updateOne({'_id':identificador},{"$set": planoContas.toJSON()});
+                const resultado = await this.planoContaMongo.db(baseDados).collection(colecao).updateOne({'_id':identificador},{"$set": planoContas.toJSON()});
+                
                 if (resultado.modifiedCount > 0){
                     return {
                         "resultado": true
@@ -88,17 +88,16 @@ export default class planoContasDB{
 
             let itensList = [];
             if (itens){
-            //    itens.forEach((planoContas) => {
-                for (const resultado of itens){
-                
-                    const buscaContaPagar = await this.planoContaMongo.db(baseDados).collection("contasPagar").findOne({"id_conta": resultado._id.toString()});
-                    let listaContaPagar = buscaContaPagar.map((docContaPagar) => {
-                        return new ContaPagar(docContaPagar._id.toString(), docContaPagar.num_doc, docContaPagar.valor,docContaPagar.vencimento,docContaPagar.multa,docContaPagar.juros,docContaPagar.data_pgto);
-                    });
-                    const it = new PlanoContas(resultado._id, resultado.descricao, resultado.id_fornecedor,listaContaPagar);
-                    itensList.push(it);
-                }    
-                    
+                           
+                const buscaContaPagar = await this.planoContaMongo.db(baseDados).collection("contasPagar").find({"id_conta":{"$regex":id}}).toArray();
+                let listaContaPagar = buscaContaPagar.map((docContaPagar) => {
+                     return new ContaPagar(docContaPagar._id.toString(), docContaPagar.num_doc, docContaPagar.valor,docContaPagar.vencimento,docContaPagar.multa,docContaPagar.juros,docContaPagar.data_pgto);
+                });
+                const it = new PlanoContas( itens._id, 
+                                            itens.descricao, 
+                                            itens.id_fornecedor, 
+                                            listaContaPagar);
+                itensList.push(it);
             }
             return itensList;
         }catch(e){
