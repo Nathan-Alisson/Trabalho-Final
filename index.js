@@ -10,10 +10,11 @@ const app = express();
 app.use('/contapagar', rotaContaPagar);
 app.use('/planocontas', rotaPlanoConta);
 
+app.use(express.static('./public'));
 
 const servidor = http.createServer(app);
 
 
 servidor.listen(port, host, () => {
-    console.log(`Servidor: \nhttp://${host}:${port}/contapagar \nhttp://${host}:${port}/planocontas`);
+    console.log(`Servidor: \nhttp://${host}:${port}/contasapagar.html \nhttp://${host}:${port}/planocontas`);
 });

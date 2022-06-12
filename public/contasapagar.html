@@ -47,38 +47,44 @@
                     <h1 class="fs-3 text-center bg-secondary text-uppercase text-white fw-bold py-4 mb-4">
                         Contas a Pagar
                     </h1>
-                    <form class="p-3">
+                    <form id="registration" class="p-3">
                         <div class="row">
                             <div class="col-lg-4 col-md-6 col-12 mb-3">
                                 <label for="documento" class="form-label">Nu.Documento</label>
-                                <input type="text" class="form-control" id="documento" name="" required>
+                                <input type="text" class="form-control" id="documento" name="num_doc" required>
                             </div>
                             <div class="col-lg-4 col-md-6 col-12 mb-3">
                                 <label for="valor" class="form-label">Valor</label>
-                                <input type="text" class="form-control value" id="valor" placeholder="Valor" name="" required>
+                                <input type="text" class="form-control value" id="valor" placeholder="Valor" name="valor" required>
                             </div>
                             <div class="col-lg-4 col-md-6 col-12 mb-3">
                                 <label for="vencimento" class="form-label">Vencimento</label>
-                                <input type="date" class="form-control" id="vencimento" placeholder="Vencimento" required>
+                                <input type="date" class="form-control" id="vencimento" name="vencimento" required>
                             </div>
                             <div class="col-lg-4 col-md-6 col-12 mb-3">
                                 <label for="multa" class="form-label">Multa</label>
-                                <input type="text" class="form-control value" id="multa" placeholder="multa" required>
+                                <input type="text" class="form-control value" id="multa" placeholder="multa" name="multa" required>
                             </div>
                             <div class="col-lg-4 col-md-6 col-12 mb-3">
                                 <label for="juros" class="form-label">Juros</label>
-                                <input type="text" class="form-control value" id="juros" placeholder="juros" required>
+                                <input type="text" class="form-control value" id="juros" placeholder="juros" name="juros" required>
                             </div>
                             <div class="col-lg-4 col-md-6 col-12 mb-3">
                                 <label for="pagamento" class="form-label">Data de pagamento</label>
-                                <input type="date" class="form-control" id="pagamento" placeholder="pagamento" required>
+                                <input type="date" class="form-control" id="pagamento" placeholder="pagamento" name="data_pgto" required>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-12 mb-3">
+                                <select class="form-select" aria-label="ID" id="id-conta" name="id_conta">
+                                    <option selected disabled>ID Conta</option>
+                                </select>
                             </div>
                             <div class="col-12">
                                 <button type="button" class="btn btn-secondary">Limpar</button>
-                                <button type="button" class="btn btn-success">Cadastrar</button>
+                                <button type="button" class="btn btn-success" id="cadastrar">Cadastrar</button>
                             </div>
                         </div>
                     </form>
+                    <div data-message></div>
                 </div>
             </section>
             <section class="mt-4">
@@ -94,18 +100,12 @@
                                 <th scope="col">Juros</th>
                                 <th scope="col">Pagamento</th>
                                 <th scope="col">ID Conta</th>
+                                <th scope="col">Opções</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">13a645487def</th>
-                                <td>254545</td>
-                                <td>R$ 123,58</td>
-                                <td>@05/06/2021</td>
-                                <td>R$ 0,00</td>
-                                <td>R$ 0,00</td>
-                                <td>05/06/2021</td>
-                                <td>13a645487def</td>
+                            <tr id="contas">
+
                             </tr>
                         </tbody>
                     </table>
@@ -117,7 +117,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.12/jquery.mask.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    
+
+    <script src="./js/pagarRegister.js"></script>
+
     <script>
         $('input.value').mask("#,##0.00", {
             reverse: true
