@@ -16,5 +16,5 @@ const servidor = http.createServer(app);
 
 
 servidor.listen(port, host, () => {
-    console.log(`Servidor: \nhttp://${host}:${port}/contasapagar.html \nhttp://${host}:${port}/planocontas`);
+    console.log(`Servidor: \nhttp://${host}:${port}/contasapagar.html \nhttp://${host}:${port}/planocontas.html`);
 });
