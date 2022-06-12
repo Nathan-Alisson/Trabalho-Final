@@ -147,7 +147,7 @@
                                         <input type="date" class="form-control" id="pagamentoDt" placeholder="pagamento" name="data_pgto" required>
                                     </div>
                                     <div class="col-lg-4 col-md-6 col-12 mb-3">
-                                        <select class="form-select" aria-label="ID" id="id-edit" name="id_conta">
+                                        <select class="form-select" aria-label="ID" id="id-contaDt" name="id_conta">
                                             <option selected disabled>ID Conta</option>
                                         </select>
                                     </div>
@@ -161,6 +161,24 @@
                     </div>
                 </div>
             </section>
+
+            <div id="pop-up" class="bg-black" style="--bs-bg-opacity: .8;">
+                <div class="container d-flex justify-content-center align-items-center h-100">
+                    <div class="card p-5">
+                        <span class="fs-3 fw-bold text-secondary mb-4">
+                            Deseja realmente excluir essa conta?
+                        </span>
+                        <div class="text-center">
+                            <button class="btn btn-danger btn text-uppercase">
+                                Não
+                            </button>
+                            <button class="btn btn-success text-uppercase" value="true">
+                                sim
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 

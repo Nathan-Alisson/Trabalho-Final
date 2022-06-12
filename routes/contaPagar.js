@@ -89,7 +89,8 @@ rotaContaPagar.route('/:id?') // o ponto de interrogação define que o id não 
         const multa         = dados.multa;
         const juros         = dados.juros;
         const data_pgto     = dados.data_pgto;
-        if (num_doc && valor && vencimento && multa && juros && data_pgto){
+        const id_conta      = dados.id_conta;
+        if (num_doc && valor && vencimento && multa && juros && data_pgto && id_conta){
            const contaPagar = new ContaPagar(req.params.id, num_doc, valor, vencimento, multa, juros, data_pgto, id_conta);
            contaPagarDB.atualizar(contaPagar).then((resultado)=>{
                 resp.statusCode = 200;

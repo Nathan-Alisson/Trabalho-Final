@@ -191,3 +191,17 @@ main #edit.active .card {
   -webkit-transform: translateY(0);
           transform: translateY(0);
 }
+
+main #pop-up {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  -webkit-transition: .5s;
+  transition: .5s;
+  visibility: hidden;
+}
+
+main #pop-up.active {
+  opacity: 1;
+  visibility: visible;
+}

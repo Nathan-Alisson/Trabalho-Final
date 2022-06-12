@@ -37,7 +37,6 @@ fetch('http://localhost:3000/planocontas', {
             // ================ Post
             $('#cadastrar').click(function(){
                 const ids = ['documento', 'valor', 'vencimento', 'multa', 'juros', 'pagamento', 'id-conta'];
-                console.log(validadeData(ids, 'registration'))
                 if (validadeData(ids, 'registration')){
                     let fields = {};
 
@@ -82,7 +81,6 @@ function addTable(){
         if (contas.length >= 0){
             let table = '';
             $('#contas th').remove();
-            console.log(contas)
             contas.forEach(conta => {
                 table += '<tr>' +
                             `<th scope="row">${conta.id}        </th>` +
@@ -107,24 +105,34 @@ function addTable(){
             
             $('.delete').each(function() {
                 $(this).click(function(){
-                    fetch(`http://localhost:3000/contapagar/${$(this).attr('data-code')}`,{
-                        method: 'DELETE'
-                    }).then(response => {
-                        if (response.ok)
-                            return response.json();
-                        else
-                            showAlert('Erro na resposta do servidor');
-                    }).then(data => {
-                        if (data.resultado){
-                            showAlert(`Cliente deletado com sucesso`, 'success');
-                        }
-                        else{
-                            showAlert('Erro ao deletar cliente');
-                        }
-                        addTable();
-            
-                    }).catch(error => {
-                        showAlert(error.message, 'danger');
+                    const code = $(this).attr('data-code');
+
+                    $('#pop-up').addClass('active');
+                    $('#pop-up button').each(function(){
+                        $(this).click(function(){
+                            if($(this).val()){
+                                fetch(`http://localhost:3000/contapagar/${code}`,{
+                                    method: 'DELETE'
+                                }).then(response => {
+                                    if (response.ok)
+                                        return response.json();
+                                    else
+                                        showAlert('Erro na resposta do servidor');
+                                }).then(data => {
+                                    if (data.resultado){
+                                        showAlert(`Cliente deletado com sucesso`, 'success');
+                                    }
+                                    else{
+                                        showAlert('Erro ao deletar cliente');
+                                    }
+                                    addTable();
+                        
+                                }).catch(error => {
+                                    showAlert(error.message, 'danger');
+                                });
+                            }
+                            $('#pop-up').removeClass('active');
+                        });
                     });
                 });
             });
@@ -160,7 +168,7 @@ function addTable(){
                             
                                         // ================ Add options in select
                                         planos.forEach(item => {
-                                            $('#id-edit').append(`<option value="${item.id_fornecedor}">${item.id_fornecedor}</option>`)
+                                            $('#id-contaDt').append(`<option value="${item.id_fornecedor}">${item.id_fornecedor}</option>`)
                                         })        
                                     }
                                 })
@@ -181,7 +189,6 @@ function addTable(){
                             fields[$(`#edit #${id}Dt`).attr('name')] = $(`#${id}Dt`).val();
                         });
 
-                        console.log(code)
                         fetch(`http://localhost:3000/contapagar/${code}`, {
                             method: 'PUT',
                             headers: {'Content-Type' : 'application/json'},

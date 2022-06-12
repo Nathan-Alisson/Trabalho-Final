@@ -39,4 +39,17 @@ main{
             }
         }
     }
+
+    #pop-up{
+        position: fixed;
+        inset: 0;
+        opacity: 0;
+        transition: .5s;
+        visibility: hidden;
+
+        &.active{
+            opacity: 1;
+            visibility: visible;
+        }        
+    }
 }
