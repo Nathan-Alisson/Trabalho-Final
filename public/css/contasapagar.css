@@ -167,3 +167,27 @@ main .box .content {
 main .box .content h1 {
   border-radius: 8px 8px 0 0;
 }
+
+main #edit {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+
+main #edit .card {
+  -webkit-transition: .5s;
+  transition: .5s;
+  -webkit-transform: translateY(-150%);
+          transform: translateY(-150%);
+}
+
+main #edit.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+main #edit.active .card {
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+}
