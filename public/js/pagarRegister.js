@@ -78,6 +78,7 @@ function addTable(){
         else showAlert('Erro na resposta do servidor');
         
     }).then(contas => {
+        console.log(contas)
         if (contas.length >= 0){
             let table = '';
             $('#contas th').remove();
