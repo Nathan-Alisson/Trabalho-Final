@@ -48,9 +48,9 @@ planoDeContas.route('/:id?')
         const dados = req.body;
         const descricao = dados.descricao;
         const id_fornecedor = dados.id_fornecedor;
-        const id_contaPagar = dados.id_contaPagar;
-        if (descricao && id_fornecedor && id_contaPagar){
-            const planoContas = new PlanoContas(0,descricao,id_fornecedor, id_contaPagar);
+        //const id_contaPagar = dados.id_contaPagar;
+        if (descricao && id_fornecedor){
+            const planoContas = new PlanoContas(0,descricao,id_fornecedor);
             PlanoContasDB.incluir(planoContas).then(() => {
                 resp.statusCode=200;
                 resp.setHeader("Content-Type","application/json");

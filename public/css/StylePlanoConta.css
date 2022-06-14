@@ -7,3 +7,41 @@ form legend{
     padding: 5px;
 
 }
+
+#pop-up {
+    position: fixed;
+    inset: 0;
+    opacity: 0;
+    -webkit-transition: .5s;
+    transition: .5s;
+    visibility: hidden;
+  }
+  
+#pop-up.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  #edit {
+    position: fixed;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  #edit .card {
+    -webkit-transition: .5s;
+    transition: .5s;
+    -webkit-transform: translateY(-150%);
+            transform: translateY(-150%);
+  }
+  
+  #edit.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  #edit.active .card {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
